@@ -1,9 +1,7 @@
 package id3tags
 
 import (
-	"fmt"
 	"os"
-	"log"
 )
 
 //Mp3 ...Contains metadata of the file like title, artist, album, year info along with file name and its path
@@ -19,16 +17,16 @@ type Mp3 struct {
 func getLastBytes(filename string) ([]byte, error) {
 	file, err := os.Open(filename)
 	if err != nil {
-		fmt.Println(err)
+		panic(err)
 	}
 	_, err = file.Seek(-int64(128), os.SEEK_END)
 	if err != nil {
-		fmt.Println(err)
+		panic(err)
 	}
 	b := make([]byte, 128)
 	_, err = file.Read(b)
     if err!=nil{
-        fmt.Println(err)
+        panic(err)
     }
 	return b, nil
 }
@@ -36,15 +34,15 @@ func getLastBytes(filename string) ([]byte, error) {
 func setLastBytes(filename string, b []byte)(error){
 	file, err:=os.OpenFile(filename,os.O_RDWR,0655)
 	if err!=nil{
-		log.Fatal(err)
+		panic(err)
 	}
 	_,err = file.Seek(-int64(128),os.SEEK_END)
 	if err!=nil{
-		log.Fatal(err)
+		panic(err)
 	}
 	_,err=file.Write(b)
 	if err!=nil{
-		log.Fatal(err)
+		panic(err)
 	}
 	return nil
 }
@@ -57,7 +55,6 @@ func (m *Mp3) GetID3Tags() {
 		m.Artist = string(b[33:63])
 		m.Album = string(b[63:93])
 		m.Year = string(b[93:97])
-		fmt.Println(m.Title,m.Artist,m.Album,m.Year)
 	}
 }
 //SetID3Tags ...Writes tag metadata to file
@@ -68,5 +65,5 @@ func (m *Mp3) SetID3Tags() {
     copy(b[33:63],m.Artist)
     copy(b[63:93],m.Album)
     copy(b[93:97],m.Year)
-    setLastBytes(m.Path +m.Filename,b)
+    setLastBytes(m.Path+m.Filename,b)
 }
