@@ -2,7 +2,7 @@
 
 Extract and write ID3 tag metadata to mp3 files.
 
-###Usage
+### Example
 
 ``` go
 package main
