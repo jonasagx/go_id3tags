@@ -9,7 +9,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/jonasagx/go_id3tags"
+	"github.com/jonasagx/id3tags"
 )
 
 func main() {
