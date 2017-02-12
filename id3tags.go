@@ -6,8 +6,8 @@ import (
 
 //Mp3 ...Contains metadata of the file like title, artist, album, year info along with file name and its path
 type Mp3 struct {
-	Filename string
-	Path     string
+	FilePath string
+	// Path     string
 	Title    string
 	Artist   string
 	Album    string
@@ -49,7 +49,7 @@ func setLastBytes(filename string, b []byte)(error){
 
 //GetID3Tags ...Extracts mp3 metadata from the file
 func (m *Mp3) GetID3Tags() {
-	b, _ := getLastBytes(m.Path + m.Filename)
+	b, _ := getLastBytes(m.FilePath)
 	if string(b[:3]) == "TAG" {
 		m.Title = string(b[3:33])
 		m.Artist = string(b[33:63])
@@ -65,5 +65,5 @@ func (m *Mp3) SetID3Tags() {
     copy(b[33:63],m.Artist)
     copy(b[63:93],m.Album)
     copy(b[93:97],m.Year)
-    setLastBytes(m.Path+m.Filename,b)
+    setLastBytes(m.FilePath,b)
 }
